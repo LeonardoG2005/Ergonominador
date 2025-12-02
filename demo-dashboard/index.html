@@ -3,11 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard con Gráficos en Tiempo Real</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>Dashboard Ergonómico IoT - Demo</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    {% load static %}
-    <script src="{% static 'js/mock-data.js' %}"></script>
+    <script src="js/mock-data.js"></script>
 </head>
 
 <style>
@@ -20,10 +18,11 @@
         font-style: normal;
     }
 
-    h1{
-        text-align:center;
-        margin: 30px 10px
+    h1 {
+        text-align: center;
+        margin: 30px 10px;
     }
+    
     body {
         background-color: #F5F7FF;
         height: 100vh;
@@ -36,6 +35,7 @@
         flex-wrap: wrap;
         justify-content: space-between;
     }
+    
 
     #chartsContainer canvas {
         flex: 1 1 calc(33% - 20px);
@@ -46,7 +46,7 @@
     
 </style>
 <body>
-    <h1>Bienvenido al Dashboard</h1>
+    <h1>Dashboard Ergonómico - Monitoreo en Tiempo Real</h1>
     
     <div id="chartsContainer">
         <canvas id="tempChart" width="10" height="10"></canvas>
@@ -67,7 +67,7 @@
             data: {
                 labels: [],
                 datasets: [{
-                    label: 'Sensor de Temperatura (grados)',
+                    label: 'Sensor de Temperatura (°C)',
                     data: [],
                     borderColor: 'rgba(75, 192, 192, 1)',
                     backgroundColor: 'rgba(75, 192, 192, 0.2)',
@@ -77,7 +77,7 @@
             options: {
                 scales: {
                     x: { title: { display: true, text: 'Tiempo' } },
-                    y: { title: { display: true, text: 'Valor' } }
+                    y: { title: { display: true, text: 'Temperatura (°C)' } }
                 }
             }
         });
@@ -87,7 +87,7 @@
             data: {
                 labels: [],
                 datasets: [{
-                    label: 'Sensor de Ultrasonido (cm)',
+                    label: 'Distancia (Ultrasonido)',
                     data: [],
                     borderColor: 'rgba(255, 99, 132, 1)',
                     backgroundColor: 'rgba(255, 99, 132, 0.2)',
@@ -97,7 +97,7 @@
             options: {
                 scales: {
                     x: { title: { display: true, text: 'Tiempo' } },
-                    y: { title: { display: true, text: 'Valor (cm)' } }
+                    y: { title: { display: true, text: 'Distancia (cm)' } }
                 }
             }
         });
@@ -107,7 +107,7 @@
             data: {
                 labels: [],
                 datasets: [{
-                    label: 'Sensor de Luz',
+                    label: 'Intensidad de Luz',
                     data: [],
                     borderColor: 'rgba(54, 162, 235, 1)',
                     backgroundColor: 'rgba(54, 162, 235, 0.2)',
@@ -122,63 +122,57 @@
             }
         });
 
-    const semaforoChart = new Chart(semaforoCtx, {
-        type: 'doughnut',
-        data: {
-            labels: ['Verde', 'Amarillo', 'Rojo'],
-            datasets: [{
-                data: [0, 0, 0],
-                backgroundColor: ['#28a745', '#ffc107', '#dc3545'],
-                hoverOffset: 4
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'top',
-                },
-                title: {
-                    display: true,
-                    text: 'Distribución del tiempo por color de semáforo'
+        const semaforoChart = new Chart(semaforoCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Verde', 'Amarillo', 'Rojo'],
+                datasets: [{
+                    data: [0, 0, 0],
+                    backgroundColor: ['#28a745', '#ffc107', '#dc3545'],
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: 'Distribución del tiempo por estado de postura'
+                    }
                 }
             }
-        }
-    });
-
-    function updateCharts() {
-        $.ajax({
-            url: "{% url 'get_sensor_data' %}",
-            method: "GET",
-            success: function (data) {
-                tempChart.data.labels = data.temp_timestamps;
-                tempChart.data.datasets[0].data = data.temp_values;
-
-                sonidoChart.data.labels = data.sonido_timestamps;
-                sonidoChart.data.datasets[0].data = data.sonido_values;
-
-                luzChart.data.labels = data.luz_timestamps;
-                luzChart.data.datasets[0].data = data.luz_values;
-
-                semaforoChart.data.datasets[0].data = [
-                    data.semaforo_tiempos['Verde'],
-                    data.semaforo_tiempos['Amarillo'],
-                    data.semaforo_tiempos['Rojo']
-                ];
-
-                tempChart.update();
-                sonidoChart.update();
-                luzChart.update();
-                semaforoChart.update();
-            },
-            error: function (error) {
-                console.error("Error al obtener los datos del sensor:", error);
-            }
         });
-    }
 
-    setInterval(updateCharts, 5000);
-    updateCharts();
+        function updateCharts() {
+            const data = MockDataGenerator.getData();
+            
+            tempChart.data.labels = data.temp_timestamps;
+            tempChart.data.datasets[0].data = data.temp_values;
+
+            sonidoChart.data.labels = data.sonido_timestamps;
+            sonidoChart.data.datasets[0].data = data.sonido_values;
+
+            luzChart.data.labels = data.luz_timestamps;
+            luzChart.data.datasets[0].data = data.luz_values;
+
+            semaforoChart.data.datasets[0].data = [
+                data.semaforo_tiempos.Verde,
+                data.semaforo_tiempos.Amarillo,
+                data.semaforo_tiempos.Rojo
+            ];
+
+            tempChart.update();
+            sonidoChart.update();
+            luzChart.update();
+            semaforoChart.update();
+        }
+
+        MockDataGenerator.init();
+        setInterval(updateCharts, 5000);
+        updateCharts();
     </script>
 </body>
 </html>
