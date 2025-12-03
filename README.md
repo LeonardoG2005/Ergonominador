@@ -4,8 +4,8 @@ Sistema Django que integra sensores IoT vía MQTT para monitorear condiciones er
 
 ## Autores
 
-- [Leonardo García](https://github.com/LeonardoG2005)
-- [Pholem Castañeda](https://github.com/PholCast)
+- [Leonardo Guevara](https://github.com/LeonardoG2005)
+- [Phol Castañeda](https://github.com/PholCast)
 
 ## Arquitectura General
 
