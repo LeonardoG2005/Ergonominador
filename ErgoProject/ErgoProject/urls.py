@@ -16,6 +16,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 from . import views
 from pages import views as pages_views
 
@@ -37,3 +39,7 @@ urlpatterns = [
     path('samples/login/', views.login_view, name='login'),  # Nueva ruta para login.html
     path('samples/register/', views.register_view, name='register'),  # Nueva ruta para register.html
 ]
+
+# Servir archivos estáticos en desarrollo
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0])

@@ -16,17 +16,21 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Configuración específica para Vercel
+if os.environ.get("VERCEL"):
+    os.environ["DJANGO_SETTINGS_MODULE"] = "ErgoProject.settings"
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-d=)@@!6p)eyat669xi(!%_(68@grq5ax!or*q^3ows$d6i45=2'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-d=)@@!6p)eyat669xi(!%_(68@grq5ax!or*q^3ows$d6i45=2')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False if os.environ.get("VERCEL") else True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [".vercel.app", "localhost", "127.0.0.1"]
 
 
 # Application definition
@@ -75,12 +79,23 @@ WSGI_APPLICATION = 'ErgoProject.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+# En Vercel, usa /tmp/ (datos efímeros, se pierden en cada deploy)
+# En local, usa BASE_DIR (datos persistentes)
+if os.environ.get('VERCEL'):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': '/tmp/db.sqlite3',
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+
 
 
 # Password validation
@@ -122,6 +137,9 @@ STATIC_URL = 'static/'
 
 # Directorio donde Django buscará archivos estáticos adicionales
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+
+# Directorio donde collectstatic recopilará los archivos (necesario para Vercel)
+STATIC_ROOT = "/tmp/staticfiles"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
