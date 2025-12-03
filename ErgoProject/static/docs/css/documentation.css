@@ -1,0 +1,207 @@
+/* Documentation page custom styles */
+
+.documentation-page {
+    background-color: #f8f9fa;
+    min-height: 100vh;
+    padding: 20px 0;
+}
+
+.doc-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 40px 0;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.doc-header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.doc-header .badge {
+    font-size: 0.9rem;
+    padding: 8px 15px;
+}
+
+.doc-nav {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    position: sticky;
+    top: 20px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.doc-nav h5 {
+    color: #667eea;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.doc-nav .nav-link {
+    color: #495057;
+    padding: 8px 15px;
+    border-radius: 5px;
+    transition: all 0.3s;
+    font-size: 0.95rem;
+}
+
+.doc-nav .nav-link:hover {
+    background-color: #f0f3ff;
+    color: #667eea;
+    transform: translateX(5px);
+}
+
+.doc-section {
+    background: white;
+    border-radius: 10px;
+    padding: 30px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.doc-section h2 {
+    color: #667eea;
+    font-weight: 600;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.doc-section h3 {
+    color: #495057;
+    font-weight: 600;
+    margin-top: 25px;
+    margin-bottom: 15px;
+}
+
+.endpoint-card {
+    border-left: 4px solid #667eea;
+    padding: 15px;
+    margin-bottom: 15px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+}
+
+.endpoint-card .badge {
+    font-size: 0.85rem;
+    padding: 5px 10px;
+}
+
+.mqtt-topic-card {
+    border-left: 4px solid #28a745;
+    padding: 15px;
+    margin-bottom: 15px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+}
+
+.code-example {
+    background-color: #2d3748;
+    color: #e2e8f0;
+    padding: 20px;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 15px 0;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.code-example pre {
+    margin: 0;
+    color: #e2e8f0;
+}
+
+.image-placeholder {
+    border: 2px dashed #dee2e6;
+    background-color: #f8f9fa;
+    padding: 40px;
+    text-align: center;
+    border-radius: 8px;
+    margin: 20px 0;
+}
+
+.image-placeholder i {
+    font-size: 3rem;
+    color: #adb5bd;
+    margin-bottom: 15px;
+}
+
+.image-placeholder .path {
+    font-family: 'Courier New', monospace;
+    background-color: #e9ecef;
+    padding: 5px 10px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 0.85rem;
+}
+
+.table-docs {
+    font-size: 0.95rem;
+}
+
+.table-docs th {
+    background-color: #667eea;
+    color: white;
+    font-weight: 600;
+}
+
+.table-docs td {
+    vertical-align: middle;
+}
+
+.btn-github {
+    background-color: #24292e;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    transition: all 0.3s;
+}
+
+.btn-github:hover {
+    background-color: #1a1e22;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.btn-github i {
+    margin-right: 8px;
+}
+
+.alert-info-custom {
+    background-color: #e7f3ff;
+    border-left: 4px solid #2196F3;
+    padding: 15px;
+    border-radius: 5px;
+    margin: 15px 0;
+}
+
+.model-badge {
+    background-color: #6c757d;
+    color: white;
+    padding: 3px 8px;
+    border-radius: 3px;
+    font-size: 0.8rem;
+    font-family: 'Courier New', monospace;
+}
+
+@media (max-width: 768px) {
+    .doc-nav {
+        position: relative;
+        margin-bottom: 20px;
+    }
+    
+    .doc-header h1 {
+        font-size: 1.8rem;
+    }
+}

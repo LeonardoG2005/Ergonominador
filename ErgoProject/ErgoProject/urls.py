@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from . import views
+from pages import views as pages_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,6 +26,7 @@ urlpatterns = [
     path("get-sensor-data/", views.get_sensor_data, name="get_sensor_data"),
     path("sensors_view/", views.sensors_view, name="sensors_view"),
     path('', views.index, name='index'),  # Ruta principal para index.html
+    path('pages/documentation/', pages_views.documentation, name='documentation'),  # Página de documentación
     path('ui-features/buttons/', views.buttons, name='buttons'),
     path('ui-features/dropdowns/', views.dropdowns, name='dropdowns'),
     path('ui-features/typography/', views.typography, name='typography'),

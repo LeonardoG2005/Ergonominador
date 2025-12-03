@@ -1,0 +1,372 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ergonominador - Documentación Técnica</title>
+    
+    <!-- Bootstrap 4 -->
+    <link rel="stylesheet" href="{% static 'vendors/css/vendor.bundle.base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/vertical-layout-light/style.css' %}">
+    
+    <!-- Custom Documentation CSS -->
+    <link rel="stylesheet" href="{% static 'docs/css/documentation.css' %}">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body class="documentation-page">
+    
+    <!-- Header -->
+    <div class="doc-header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1><i class="fas fa-book"></i> Ergonominador</h1>
+                    <p class="lead mb-0">Sistema de Monitoreo Ergonómico IoT - Documentación Técnica</p>
+                </div>
+                <div class="col-md-4 text-md-right mt-3 mt-md-0">
+                    <span class="badge badge-light"><i class="fas fa-code-branch"></i> Rama: {{ current_branch }}</span>
+                    <br>
+                    <small class="text-white-50">Generado: {% now "d/m/Y H:i" %}</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row">
+            
+            <!-- Navigation Sidebar -->
+            <div class="col-lg-3 col-md-4">
+                <div class="doc-nav">
+                    <h5><i class="fas fa-list"></i> Índice</h5>
+                    <nav class="nav flex-column">
+                        <a class="nav-link" href="#readme"><i class="fas fa-file-alt"></i> README</a>
+                        <a class="nav-link" href="#arquitectura"><i class="fas fa-project-diagram"></i> Arquitectura</a>
+                        <a class="nav-link" href="#endpoints"><i class="fas fa-plug"></i> Endpoints API</a>
+                        <a class="nav-link" href="#mqtt"><i class="fas fa-network-wired"></i> MQTT Topics</a>
+                        <a class="nav-link" href="#modelos"><i class="fas fa-database"></i> Modelos Django</a>
+                        <a class="nav-link" href="#micropython"><i class="fas fa-microchip"></i> ESP32 / MicroPython</a>
+                        <a class="nav-link" href="#sensores"><i class="fas fa-camera"></i> Sensores</a>
+                        <a class="nav-link" href="#circuito"><i class="fas fa-bolt"></i> Circuito</a>
+                        <a class="nav-link" href="#ejecucion"><i class="fas fa-play"></i> Ejecución Local</a>
+                        <a class="nav-link" href="#demo"><i class="fas fa-flask"></i> Modo Demo</a>
+                    </nav>
+                    
+                    <hr>
+                    
+                    <a href="{{ repo_url }}" target="_blank" class="btn-github">
+                        <i class="fab fa-github"></i> Ver en GitHub
+                    </a>
+                </div>
+            </div>
+
+            <!-- Documentation Content -->
+            <div class="col-lg-9 col-md-8">
+                
+                <!-- README Section -->
+                <div id="readme" class="doc-section">
+                    <h2><i class="fas fa-file-alt"></i> README del Proyecto</h2>
+                    <div class="readme-content">
+                        {{ readme_html|safe }}
+                    </div>
+                </div>
+
+                <!-- Arquitectura -->
+                <div id="arquitectura" class="doc-section">
+                    <h2><i class="fas fa-project-diagram"></i> Arquitectura del Sistema</h2>
+                    <p>El sistema sigue el patrón <strong>Hardware IoT → MQTT Broker → Backend Django → Frontend Dashboard</strong>.</p>
+                    
+                    <div class="alert-info-custom">
+                        <strong><i class="fas fa-info-circle"></i> Stack Tecnológico:</strong>
+                        <ul class="mb-0 mt-2">
+                            <li><strong>Backend:</strong> Django 5.1.2 + SQLite</li>
+                            <li><strong>Comunicación IoT:</strong> MQTT (Paho-MQTT + HiveMQ Cloud)</li>
+                            <li><strong>Frontend:</strong> jQuery + Chart.js + Bootstrap 4</li>
+                            <li><strong>Hardware:</strong> ESP32 + MicroPython</li>
+                            <li><strong>Sensores:</strong> DHT22 (temp), HC-SR04 (ultrasonido), LDR (luz)</li>
+                        </ul>
+                    </div>
+
+                    <h3>Flujo de Datos</h3>
+                    <ol>
+                        <li><strong>Sensores físicos</strong> conectados a ESP32 miden temperatura, distancia y luz</li>
+                        <li><strong>ESP32</strong> publica datos vía WiFi al broker MQTT (HiveMQ Cloud, puerto 8883 TLS)</li>
+                        <li><strong>Cliente MQTT Django</strong> (mqtt_client.py) escucha topics y guarda en BD SQLite</li>
+                        <li><strong>Frontend</strong> consulta API REST vía polling (cada 5s) y visualiza con Chart.js</li>
+                    </ol>
+                </div>
+
+                <!-- Endpoints API -->
+                <div id="endpoints" class="doc-section">
+                    <h2><i class="fas fa-plug"></i> Endpoints de la API REST</h2>
+                    <p>El backend Django expone los siguientes endpoints para consulta de datos:</p>
+                    
+                    {% for endpoint in endpoints %}
+                    <div class="endpoint-card">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <h5 class="mb-1">
+                                    <span class="badge badge-success">{{ endpoint.method }}</span>
+                                    <code>{{ endpoint.url }}</code>
+                                </h5>
+                                <p class="mb-2">{{ endpoint.description }}</p>
+                            </div>
+                        </div>
+                        
+                        {% if endpoint.response_example %}
+                        <h6 class="mt-3">Ejemplo de respuesta:</h6>
+                        <div class="code-example">
+                            <pre>{{ endpoint.response_example }}</pre>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- MQTT Topics -->
+                <div id="mqtt" class="doc-section">
+                    <h2><i class="fas fa-network-wired"></i> Topics MQTT</h2>
+                    <p>El sistema utiliza el broker <strong>HiveMQ Cloud</strong> (broker.hivemq.com:8883) con los siguientes topics:</p>
+                    
+                    <table class="table table-docs table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Topic</th>
+                                <th>Tipo</th>
+                                <th>Payload</th>
+                                <th>Descripción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for topic in mqtt_topics %}
+                            <tr>
+                                <td><code>{{ topic.topic }}</code></td>
+                                <td><small class="text-muted">{{ topic.type }}</small></td>
+                                <td><span class="model-badge">{{ topic.payload }}</span></td>
+                                <td>
+                                    {{ topic.description }}
+                                    <br><small class="text-muted">Ej: <code>{{ topic.example }}</code></small>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                    <h3>Configuración del Cliente MQTT</h3>
+                    <div class="code-example">
+<pre>import paho.mqtt.client as paho
+from paho import mqtt
+
+client = paho.Client(client_id="", userdata=None, protocol=paho.MQTTv5)
+client.tls_set(tls_version=mqtt.client.ssl.PROTOCOL_TLS)
+client.connect("broker.hivemq.com", 8883)
+
+# Suscripción a topics
+client.subscribe("sensorsPHOLLEO/#", qos=1)
+client.subscribe("alertPHOLLEO/#", qos=1)
+
+client.loop_forever()  # Thread daemon en wsgi.py</pre>
+                    </div>
+                </div>
+
+                <!-- Modelos Django -->
+                <div id="modelos" class="doc-section">
+                    <h2><i class="fas fa-database"></i> Modelos de Base de Datos</h2>
+                    <p>Estructura de datos en <code>mqttApp/models.py</code>:</p>
+                    
+                    {% for model in models %}
+                    <div class="endpoint-card">
+                        <h5><i class="fas fa-table"></i> {{ model.name }}</h5>
+                        <p>{{ model.description }}</p>
+                        <p class="mb-0"><strong>Campos:</strong> <code>{{ model.fields }}</code></p>
+                    </div>
+                    {% endfor %}
+
+                    <h3>Ejemplo de query:</h3>
+                    <div class="code-example">
+<pre># Obtener últimas 10 lecturas de temperatura
+from mqttApp.models import SensorTemp
+temps = SensorTemp.objects.order_by('-date')[:10]
+
+# Alertas no vistas de distancia
+from mqttApp.models import Alert
+alerts = Alert.objects.filter(type_alert="Distancia", seen=False)</pre>
+                    </div>
+                </div>
+
+                <!-- ESP32 / MicroPython -->
+                <div id="micropython" class="doc-section">
+                    <h2><i class="fas fa-microchip"></i> ESP32 y MicroPython</h2>
+                    <p>Archivo: <code>{{ micropython.file }}</code></p>
+                    <p>{{ micropython.description }}</p>
+                    
+                    <h3>Clases principales:</h3>
+                    {% for class in micropython.classes %}
+                    <div class="mqtt-topic-card">
+                        <h5>{{ class.name }}</h5>
+                        <p><strong>Pines:</strong> <code>{{ class.pins }}</code></p>
+                        <p class="mb-0"><strong>Función:</strong> {{ class.function }}</p>
+                    </div>
+                    {% endfor %}
+
+                    <div class="alert-info-custom">
+                        <strong><i class="fas fa-lightbulb"></i> Lógica MQTT:</strong>
+                        <p class="mb-0">{{ micropython.mqtt_logic }}</p>
+                    </div>
+
+                    <h3>Ejemplo de publicación desde ESP32:</h3>
+                    <div class="code-example">
+<pre>from umqtt.simple import MQTTClient
+import machine
+
+# Configurar cliente MQTT
+client = MQTTClient("ESP32_Client", "broker.hivemq.com", 8883, ssl=True)
+client.connect()
+
+# Publicar temperatura
+temp_sensor = machine.ADC(32)
+temp_value = temp_sensor.read()
+client.publish(b"sensorsPHOLLEO/temp", str(temp_value).encode())
+
+# Publicar alerta de postura
+client.publish(b"alertPHOLLEO/postura/Verde", b"120")  # 120 segundos en verde</pre>
+                    </div>
+                </div>
+
+                <!-- Imágenes de Sensores -->
+                <div id="sensores" class="doc-section">
+                    <h2><i class="fas fa-camera"></i> Sensores del Sistema</h2>
+                    <p>Coloca las imágenes de tus sensores en el directorio indicado.</p>
+                    
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="image-placeholder">
+                                <i class="fas fa-thermometer-half"></i>
+                                <h5>Sensor de Temperatura</h5>
+                                <p class="text-muted">DHT22</p>
+                                <div class="path">static/docs/images/sensors/temp_sensor.jpg</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="image-placeholder">
+                                <i class="fas fa-ruler"></i>
+                                <h5>Sensor Ultrasónico</h5>
+                                <p class="text-muted">HC-SR04</p>
+                                <div class="path">static/docs/images/sensors/ultrasonic.jpg</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="image-placeholder">
+                                <i class="fas fa-lightbulb"></i>
+                                <h5>Sensor de Luz</h5>
+                                <p class="text-muted">LDR (Fotoresistor)</p>
+                                <div class="path">static/docs/images/sensors/light_sensor.jpg</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Imágenes del Circuito -->
+                <div id="circuito" class="doc-section">
+                    <h2><i class="fas fa-bolt"></i> Circuito Completo</h2>
+                    <p>Imágenes del montaje del circuito con ESP32.</p>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="image-placeholder">
+                                <i class="fas fa-image"></i>
+                                <h5>Circuito - Vista 1</h5>
+                                <div class="path">static/docs/images/circuit/circuit_01.jpg</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="image-placeholder">
+                                <i class="fas fa-image"></i>
+                                <h5>Circuito - Vista 2</h5>
+                                <div class="path">static/docs/images/circuit/circuit_02.jpg</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="alert-info-custom mt-3">
+                        <strong><i class="fas fa-info-circle"></i> Nota:</strong> 
+                        Reemplaza los placeholders colocando tus imágenes en las rutas indicadas 
+                        (<code>static/docs/images/sensors/</code> y <code>static/docs/images/circuit/</code>).
+                    </div>
+                </div>
+
+                <!-- Ejecución Local -->
+                <div id="ejecucion" class="doc-section">
+                    <h2><i class="fas fa-play"></i> Ejecución Local</h2>
+                    
+                    <h3>Prerrequisitos</h3>
+                    <div class="code-example">
+<pre>pip install django paho-mqtt</pre>
+                    </div>
+
+                    <h3>Iniciar el servidor</h3>
+                    <div class="code-example">
+<pre>cd ErgoProject
+python manage.py migrate
+python manage.py runserver</pre>
+                    </div>
+
+                    <h3>Acceder al dashboard</h3>
+                    <ul>
+                        <li><strong>Dashboard principal:</strong> <a href="http://127.0.0.1:8000/" target="_blank">http://127.0.0.1:8000/</a></li>
+                        <li><strong>Vista de sensores:</strong> <a href="http://127.0.0.1:8000/sensors_view/" target="_blank">http://127.0.0.1:8000/sensors_view/</a></li>
+                        <li><strong>API Alertas:</strong> <a href="http://127.0.0.1:8000/get-alerts/" target="_blank">http://127.0.0.1:8000/get-alerts/</a></li>
+                        <li><strong>API Datos:</strong> <a href="http://127.0.0.1:8000/get-sensor-data/" target="_blank">http://127.0.0.1:8000/get-sensor-data/</a></li>
+                    </ul>
+                </div>
+
+                <!-- Modo Demo -->
+                <div id="demo" class="doc-section">
+                    <h2><i class="fas fa-flask"></i> Modo Demo (Sin Hardware)</h2>
+                    <p>Para probar el sistema sin hardware IoT, cambia a la rama <code>demo</code>:</p>
+                    
+                    <div class="code-example">
+<pre>git checkout demo
+python manage.py runserver</pre>
+                    </div>
+
+                    <div class="alert-info-custom">
+                        <strong><i class="fas fa-info-circle"></i> Diferencias:</strong>
+                        <ul class="mb-0 mt-2">
+                            <li>Cliente MQTT deshabilitado (wsgi.py limpio)</li>
+                            <li>Datos simulados algorítmicamente en views.py</li>
+                            <li>Base de datos no consultada (datos en memoria)</li>
+                            <li>Frontend idéntico al de producción</li>
+                        </ul>
+                    </div>
+
+                    <p class="mt-3">
+                        Ver <a href="{{ repo_url }}/tree/demo" target="_blank">README de la rama demo</a> 
+                        para más detalles sobre la simulación.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center py-4 mt-5">
+        <div class="container">
+            <p class="text-muted mb-0">
+                <small>
+                    © 2024 Universidad de Medellín - Ergonominador | 
+                    <a href="{{ repo_url }}" target="_blank">GitHub</a>
+                </small>
+            </p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="{% static 'vendors/js/vendor.bundle.base.js' %}"></script>
+</body>
+</html>
