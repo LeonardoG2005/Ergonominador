@@ -1,5 +1,12 @@
 # Ergonominador - Sistema de Monitoreo Ergonómico IoT
 
+Sistema Django que integra sensores IoT vía MQTT para monitorear condiciones ergonómicas del espacio de trabajo.
+
+## Autores
+
+- [Leonardo García](https://github.com/LeonardoG2005)
+- [Pholem Castañeda](https://github.com/PholCast)
+
 ## Arquitectura General
 
 Sistema Django que integra sensores IoT vía MQTT para monitorear condiciones ergonómicas del espacio de trabajo. La arquitectura sigue el patrón: **Hardware → MQTT Broker → Backend Django → Frontend Dashboard**.
@@ -9,6 +16,8 @@ Sistema Django que integra sensores IoT vía MQTT para monitorear condiciones er
 - **Backend**: Django 5.1.2 + SQLite
 - **Comunicación IoT**: MQTT (Paho-MQTT + HiveMQ Cloud)
 - **Frontend**: jQuery + Chart.js + Bootstrap 4
+- **Hardware**: ESP32 + MicroPython
+- **Sensores**: LM35DZ (temperatura), HC-SR04 (ultrasonido), LDR (luz)
 - **Protocolo**: MQTT over TLS (puerto 8883)
 
 ## Componentes Clave
@@ -85,9 +94,23 @@ python manage.py runserver
 
 ### Endpoints principales
 
+- **Página principal**: http://localhost:8000/
 - **Dashboard gráficos**: http://localhost:8000/sensors_view/
+- **Documentación técnica**: http://localhost:8000/pages/documentation/
 - **API alertas**: http://localhost:8000/get-alerts/
 - **API datos sensores**: http://localhost:8000/get-sensor-data/
+
+## Documentación Completa
+
+Para ver la documentación técnica completa del proyecto, accede a `/pages/documentation/` después de iniciar el servidor. Incluye:
+
+- Arquitectura detallada del sistema
+- Especificaciones de todos los endpoints API
+- Documentación de topics MQTT
+- Modelos de base de datos
+- Código completo de MicroPython (ESP32)
+- Librería MQTT cliente (umqttsimple.py)
+- Imágenes de sensores y circuitos
 
 ## Datos Esperados en Producción
 

@@ -23,11 +23,11 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-md-8">
-                    <h1><i class="fas fa-book"></i> Ergonominador</h1>
+                    <h1>Ergonominador</h1>
                     <p class="lead mb-0">Sistema de Monitoreo Ergonómico IoT - Documentación Técnica</p>
                 </div>
                 <div class="col-md-4 text-md-right mt-3 mt-md-0">
-                    <span class="badge badge-light"><i class="fas fa-code-branch"></i> Rama: {{ current_branch }}</span>
+                    <span class="badge badge-light">Rama: {{ current_branch }}</span>
                     <br>
                     <small class="text-white-50">Generado: {% now "d/m/Y H:i" %}</small>
                 </div>
@@ -42,22 +42,26 @@
             <!-- Navigation Sidebar -->
             <div class="col-lg-3 col-md-4">
                 <div class="doc-nav">
-                    <h5><i class="fas fa-list"></i> Índice</h5>
+                    <h5>Índice</h5>
                     <nav class="nav flex-column">
-                        <a class="nav-link" href="#readme"><i class="fas fa-file-alt"></i> README</a>
-                        <a class="nav-link" href="#arquitectura"><i class="fas fa-project-diagram"></i> Arquitectura</a>
-                        <a class="nav-link" href="#endpoints"><i class="fas fa-plug"></i> Endpoints API</a>
-                        <a class="nav-link" href="#mqtt"><i class="fas fa-network-wired"></i> MQTT Topics</a>
-                        <a class="nav-link" href="#modelos"><i class="fas fa-database"></i> Modelos Django</a>
-                        <a class="nav-link" href="#micropython"><i class="fas fa-microchip"></i> ESP32 / MicroPython</a>
-                        <a class="nav-link" href="#sensores"><i class="fas fa-camera"></i> Sensores</a>
-                        <a class="nav-link" href="#circuito"><i class="fas fa-bolt"></i> Circuito</a>
+                        <a class="nav-link" href="#proyecto">Proyecto</a>
+                        <a class="nav-link" href="#arquitectura-general">Arquitectura General</a>
+                        <a class="nav-link" href="#componentes-clave">Componentes Clave</a>
+                        <a class="nav-link" href="#flujo-iot">Flujo IoT Real</a>
+                        <a class="nav-link" href="#ejecucion-local">Ejecución Local</a>
+                        <a class="nav-link" href="#datos-esperados">Datos Esperados en Producción</a>
+                        <a class="nav-link" href="#endpoints">Endpoints API</a>
+                        <a class="nav-link" href="#mqtt">MQTT Topics</a>
+                        <a class="nav-link" href="#modelos">Modelos Django</a>
+                        <a class="nav-link" href="#micropython">ESP32 / MicroPython</a>
+                        <a class="nav-link" href="#sensores">Sensores</a>
+                        <a class="nav-link" href="#circuito">Circuito</a>
                     </nav>
                     
                     <hr>
                     
                     <a href="{{ repo_url }}" target="_blank" class="btn-github">
-                        <i class="fab fa-github"></i> Ver en GitHub
+                        Ver en GitHub
                     </a>
                 </div>
             </div>
@@ -65,31 +69,47 @@
             <!-- Documentation Content -->
             <div class="col-lg-9 col-md-8">
                 
-                <!-- README Section -->
-                <div id="readme" class="doc-section mb-5">
-                    <h2><i class="fas fa-file-alt"></i> README del Proyecto</h2>
-                    <div class="readme-content">
-                        {{ readme_html|safe }}
+                <!-- Proyecto Section -->
+                <div id="proyecto" class="doc-section mb-5">
+                    <h2>Proyecto</h2>
+                    
+                    <div class="mb-4">
+                        <h5>Proyecto Completo Montado</h5>
+                        <img src="{% static 'docs/images/proyecto_completo.jpg' %}" alt="Proyecto Completo" class="img-fluid" style="max-width: 100%; height: auto; border: 1px solid #dee2e6; border-radius: 4px;">
                     </div>
+
+                    <h3>Autores</h3>
+                    <ul>
+                        <li><a href="https://github.com/LeonardoG2005" target="_blank">https://github.com/LeonardoG2005</a></li>
+                        <li><a href="https://github.com/PholCast" target="_blank">https://github.com/PholCast</a></li>
+                    </ul>
                 </div>
 
-                <!-- Arquitectura -->
-                <div id="arquitectura" class="doc-section mb-5">
-                    <h2><i class="fas fa-project-diagram"></i> Arquitectura del Sistema</h2>
+                <!-- Arquitectura General -->
+                <div id="arquitectura-general" class="doc-section mb-5">
+                    <h2>Arquitectura General</h2>
                     <p>El sistema sigue el patrón <strong>Hardware IoT → MQTT Broker → Backend Django → Frontend Dashboard</strong>.</p>
+                </div>
+
+                <!-- Componentes Clave -->
+                <div id="componentes-clave" class="doc-section mb-5">
+                    <h2>Componentes Clave</h2>
                     
                     <div class="alert-info-custom">
-                        <strong><i class="fas fa-info-circle"></i> Stack Tecnológico:</strong>
+                        <strong>Stack Tecnológico:</strong>
                         <ul class="mb-0 mt-2">
                             <li><strong>Backend:</strong> Django 5.1.2 + SQLite</li>
                             <li><strong>Comunicación IoT:</strong> MQTT (Paho-MQTT + HiveMQ Cloud)</li>
                             <li><strong>Frontend:</strong> jQuery + Chart.js + Bootstrap 4</li>
                             <li><strong>Hardware:</strong> ESP32 + MicroPython</li>
-                            <li><strong>Sensores:</strong> DHT22 (temp), HC-SR04 (ultrasonido), LDR (luz)</li>
+                            <li><strong>Sensores:</strong> LM35DZ (temp), HC-SR04 (ultrasonido), LDR (luz)</li>
                         </ul>
                     </div>
+                </div>
 
-                    <h3>Flujo de Datos</h3>
+                <!-- Flujo IoT Real -->
+                <div id="flujo-iot" class="doc-section mb-5">
+                    <h2>Flujo IoT Real</h2>
                     <ol>
                         <li><strong>Sensores físicos</strong> conectados a ESP32 miden temperatura, distancia y luz</li>
                         <li><strong>ESP32</strong> publica datos vía WiFi al broker MQTT (HiveMQ Cloud, puerto 8883 TLS)</li>
@@ -98,9 +118,33 @@
                     </ol>
                 </div>
 
+                <!-- Ejecución Local -->
+                <div id="ejecucion-local" class="doc-section mb-5">
+                    <h2>Ejecución Local</h2>
+                    <p>Para ejecutar el proyecto localmente:</p>
+                    <ol>
+                        <li>Clonar el repositorio</li>
+                        <li>Instalar dependencias: <code>pip install -r requirements.txt</code></li>
+                        <li>Ejecutar migraciones: <code>python manage.py migrate</code></li>
+                        <li>Iniciar servidor: <code>python manage.py runserver</code></li>
+                        <li>Acceder a <code>http://127.0.0.1:8000</code></li>
+                    </ol>
+                </div>
+
+                <!-- Datos Esperados en Producción -->
+                <div id="datos-esperados" class="doc-section mb-5">
+                    <h2>Datos Esperados en Producción</h2>
+                    <ul>
+                        <li><strong>Temperatura:</strong> Rango típico 15-35°C</li>
+                        <li><strong>Distancia (nivel del tanque):</strong> 0-100 cm</li>
+                        <li><strong>Luz:</strong> Valores ADC proporcionales a intensidad lumínica</li>
+                        <li><strong>Frecuencia de publicación:</strong> Cada 1-5 segundos por sensor</li>
+                    </ul>
+                </div>
+
                 <!-- Endpoints API -->
                 <div id="endpoints" class="doc-section mb-5">
-                    <h2><i class="fas fa-plug"></i> Endpoints de la API REST</h2>
+                    <h2>Endpoints de la API REST</h2>
                     <p>El backend Django expone los siguientes endpoints para consulta de datos:</p>
                     
                     {% for endpoint in endpoints %}
@@ -120,7 +164,7 @@
 
                 <!-- MQTT Topics -->
                 <div id="mqtt" class="doc-section mb-5">
-                    <h2><i class="fas fa-network-wired"></i> Topics MQTT</h2>
+                    <h2>Topics MQTT</h2>
                     <p>El sistema utiliza el broker <strong>HiveMQ Cloud</strong> (broker.hivemq.com:8883) con los siguientes topics:</p>
                     
                     <div class="table-responsive">
@@ -149,22 +193,215 @@
                         </table>
                     </div>
 
-                    <div class="image-placeholder mt-4">
-                        <i class="fas fa-code"></i>
-                        <h5>Configuración MQTT desde ESP32</h5>
-                        <p class="text-muted">Insertar aquí la configuración real extraída de <code>MQTT_ERGONOMINADOR.py</code></p>
-                        <div class="path">Código de configuración MQTT del ESP32</div>
-                    </div>
+                    <h3 class="mt-4">Librería MQTT Cliente (umqttsimple.py)</h3>
+                    <p class="text-muted mb-2">Cliente MQTT minimalista para MicroPython</p>
+                    <textarea readonly class="code-display" rows="30" style="width: 100%; font-family: 'Courier New', Consolas, monospace; font-size: 13px; padding: 15px; background-color: #ffffff; color: #000000; border: 1px solid #dee2e6; overflow-x: auto;">try:
+    import usocket as socket
+except:
+    import socket
+import ustruct as struct
+from ubinascii import hexlify
+
+class MQTTException(Exception):
+    pass
+
+class MQTTClient:
+
+    def __init__(self, client_id, server, port=0, user=None, password=None, keepalive=0,
+                 ssl=False, ssl_params={}):
+        if port == 0:
+            port = 8883 if ssl else 1883
+        self.client_id = client_id
+        self.sock = None
+        self.server = server
+        self.port = port
+        self.ssl = ssl
+        self.ssl_params = ssl_params
+        self.pid = 0
+        self.cb = None
+        self.user = user
+        self.pswd = password
+        self.keepalive = keepalive
+        self.lw_topic = None
+        self.lw_msg = None
+        self.lw_qos = 0
+        self.lw_retain = False
+
+    def _send_str(self, s):
+        self.sock.write(struct.pack("!H", len(s)))
+        self.sock.write(s)
+
+    def _recv_len(self):
+        n = 0
+        sh = 0
+        while 1:
+            b = self.sock.read(1)[0]
+            n |= (b & 0x7f) << sh
+            if not b & 0x80:
+                return n
+            sh += 7
+
+    def set_callback(self, f):
+        self.cb = f
+
+    def set_last_will(self, topic, msg, retain=False, qos=0):
+        assert 0 <= qos <= 2
+        assert topic
+        self.lw_topic = topic
+        self.lw_msg = msg
+        self.lw_qos = qos
+        self.lw_retain = retain
+
+    def connect(self, clean_session=True):
+        self.sock = socket.socket()
+        addr = socket.getaddrinfo(self.server, self.port)[0][-1]
+        self.sock.connect(addr)
+        if self.ssl:
+            import ussl
+            self.sock = ussl.wrap_socket(self.sock, **self.ssl_params)
+        premsg = bytearray(b"\x10\0\0\0\0\0")
+        msg = bytearray(b"\x04MQTT\x04\x02\0\0")
+
+        sz = 10 + 2 + len(self.client_id)
+        msg[6] = clean_session << 1
+        if self.user is not None:
+            sz += 2 + len(self.user) + 2 + len(self.pswd)
+            msg[6] |= 0xC0
+        if self.keepalive:
+            assert self.keepalive < 65536
+            msg[7] |= self.keepalive >> 8
+            msg[8] |= self.keepalive & 0x00FF
+        if self.lw_topic:
+            sz += 2 + len(self.lw_topic) + 2 + len(self.lw_msg)
+            msg[6] |= 0x4 | (self.lw_qos & 0x1) << 3 | (self.lw_qos & 0x2) << 3
+            msg[6] |= self.lw_retain << 5
+
+        i = 1
+        while sz > 0x7f:
+            premsg[i] = (sz & 0x7f) | 0x80
+            sz >>= 7
+            i += 1
+        premsg[i] = sz
+
+        self.sock.write(premsg, i + 2)
+        self.sock.write(msg)
+        self._send_str(self.client_id)
+        if self.lw_topic:
+            self._send_str(self.lw_topic)
+            self._send_str(self.lw_msg)
+        if self.user is not None:
+            self._send_str(self.user)
+            self._send_str(self.pswd)
+        resp = self.sock.read(4)
+        assert resp[0] == 0x20 and resp[1] == 0x02
+        if resp[3] != 0:
+            raise MQTTException(resp[3])
+        return resp[2] & 1
+
+    def disconnect(self):
+        self.sock.write(b"\xe0\0")
+        self.sock.close()
+
+    def ping(self):
+        self.sock.write(b"\xc0\0")
+
+    def publish(self, topic, msg, retain=False, qos=0):
+        pkt = bytearray(b"\x30\0\0\0")
+        pkt[0] |= qos << 1 | retain
+        sz = 2 + len(topic) + len(msg)
+        if qos > 0:
+            sz += 2
+        assert sz < 2097152
+        i = 1
+        while sz > 0x7f:
+            pkt[i] = (sz & 0x7f) | 0x80
+            sz >>= 7
+            i += 1
+        pkt[i] = sz
+        self.sock.write(pkt, i + 1)
+        self._send_str(topic)
+        if qos > 0:
+            self.pid += 1
+            pid = self.pid
+            struct.pack_into("!H", pkt, 0, pid)
+            self.sock.write(pkt, 2)
+        self.sock.write(msg)
+        if qos == 1:
+            while 1:
+                op = self.wait_msg()
+                if op == 0x40:
+                    sz = self.sock.read(1)
+                    assert sz == b"\x02"
+                    rcv_pid = self.sock.read(2)
+                    rcv_pid = rcv_pid[0] << 8 | rcv_pid[1]
+                    if pid == rcv_pid:
+                        return
+        elif qos == 2:
+            assert 0
+
+    def subscribe(self, topic, qos=0):
+        assert self.cb is not None, "Subscribe callback is not set"
+        pkt = bytearray(b"\x82\0\0\0")
+        self.pid += 1
+        struct.pack_into("!BH", pkt, 1, 2 + 2 + len(topic) + 1, self.pid)
+        self.sock.write(pkt)
+        self._send_str(topic)
+        self.sock.write(qos.to_bytes(1, "little"))
+        while 1:
+            op = self.wait_msg()
+            if op == 0x90:
+                resp = self.sock.read(4)
+                assert resp[1] == pkt[2] and resp[2] == pkt[3]
+                if resp[3] == 0x80:
+                    raise MQTTException(resp[3])
+                return
+
+    def wait_msg(self):
+        res = self.sock.read(1)
+        self.sock.setblocking(True)
+        if res is None:
+            return None
+        if res == b"":
+            raise OSError(-1)
+        if res == b"\xd0":
+            sz = self.sock.read(1)[0]
+            assert sz == 0
+            return None
+        op = res[0]
+        if op & 0xf0 != 0x30:
+            return op
+        sz = self._recv_len()
+        topic_len = self.sock.read(2)
+        topic_len = (topic_len[0] << 8) | topic_len[1]
+        topic = self.sock.read(topic_len)
+        sz -= topic_len + 2
+        if op & 6:
+            pid = self.sock.read(2)
+            pid = pid[0] << 8 | pid[1]
+            sz -= 2
+        msg = self.sock.read(sz)
+        self.cb(topic, msg)
+        if op & 6 == 2:
+            pkt = bytearray(b"\x40\x02\0\0")
+            struct.pack_into("!H", pkt, 2, pid)
+            self.sock.write(pkt)
+        elif op & 6 == 4:
+            assert 0
+
+    def check_msg(self):
+        self.sock.setblocking(False)
+        return self.wait_msg()
+</textarea>
                 </div>
 
                 <!-- Modelos Django -->
                 <div id="modelos" class="doc-section mb-5">
-                    <h2><i class="fas fa-database"></i> Modelos de Base de Datos</h2>
+                    <h2>Modelos de Base de Datos</h2>
                     <p>Estructura de datos en <code>mqttApp/models.py</code>:</p>
                     
                     {% for model in models %}
                     <div class="endpoint-card">
-                        <h5><i class="fas fa-table"></i> {{ model.name }}</h5>
+                        <h5>{{ model.name }}</h5>
                         <p>{{ model.description }}</p>
                         <p class="mb-0"><strong>Campos:</strong> <code>{{ model.fields }}</code></p>
                     </div>
@@ -173,7 +410,7 @@
 
                 <!-- ESP32 / MicroPython -->
                 <div id="micropython" class="doc-section mb-5">
-                    <h2><i class="fas fa-microchip"></i> ESP32 y MicroPython</h2>
+                    <h2>ESP32 y MicroPython</h2>
                     <p>Archivo: <code>{{ micropython.file }}</code></p>
                     <p>{{ micropython.description }}</p>
                     
@@ -187,46 +424,200 @@
                     {% endfor %}
 
                     <div class="alert-info-custom">
-                        <strong><i class="fas fa-lightbulb"></i> Lógica MQTT:</strong>
+                        <strong>Lógica MQTT:</strong>
                         <p class="mb-0">{{ micropython.mqtt_logic }}</p>
                     </div>
 
-                    <div class="image-placeholder mt-4">
-                        <i class="fas fa-file-code"></i>
-                        <h5>Código Completo MicroPython</h5>
-                        <p class="text-muted">INSERTAR AQUÍ el archivo <code>MQTT_ERGONOMINADOR.py</code></p>
-                        <div class="path">Coloca aquí tu código MQTT_ERGONOMINADOR.py completo o una captura</div>
-                    </div>
+                    <h3 class="mt-4">Código Completo MicroPython</h3>
+                    <p class="text-muted mb-2">Archivo: <code>MQTT_ERGONOMINADOR.py</code></p>
+                    <textarea readonly class="code-display" rows="30" style="width: 100%; font-family: 'Courier New', Consolas, monospace; font-size: 13px; padding: 15px; background-color: #ffffff; color: #000000; border: 1px solid #dee2e6; overflow-x: auto;">from machine import Pin, time_pulse_us, ADC, Timer
+import time
+import _thread
+import gc
+
+class UltrasonicSensor:
+    def __init__(self, trigger_number=25, echo_number=26):
+        self.trigger_number = trigger_number
+        self.echo_number = echo_number
+        self.trigger = Pin(self.trigger_number, Pin.OUT)
+        self.trigger.value(0)
+        self.echo = Pin(self.echo_number, Pin.IN)
+        self.level = None
+        self.lock = _thread.allocate_lock()
+        _thread.start_new_thread(self.measure_duration, ())
+    
+    def measure_duration(self):
+        while True:
+            self.trigger.value(1)
+            time.sleep(10e-6)
+            self.trigger.value(0)
+            duracion = time_pulse_us(self.echo,1)
+            with self.lock:
+                measured_distance = (duracion * 0.0340) /2
+                self.level = 100 - measured_distance
+                print(f"Distancia: {measured_distance} cm")
+                print(f"Current level: {self.level} cm")
+            time.sleep(1)
+
+class Tank:
+    def __init__(self, filling_button=21, draining_button=4, stop_button=15, 
+                 input_valve_pin=22, output_valve_pin=23, temp_sensor_pin=32, 
+                 num_samples=100, max_level=90, min_level=75, max_temp=20, 
+                 adc_min=0, adc_max=1697, v_min=0, v_max=150):
+        self.adc_min = adc_min
+        self.adc_max = adc_max
+        self.v_min = v_min
+        self.v_max = v_max
+        self.executing = False
+        self.lock = _thread.allocate_lock()
+        self.input_valve = Pin(input_valve_pin, Pin.OUT)
+        self.output_valve = Pin(output_valve_pin, Pin.OUT)
+        self.filling_button = Pin(filling_button, Pin.IN, Pin.PULL_DOWN)
+        self.draining_button = Pin(draining_button, Pin.IN, Pin.PULL_DOWN)
+        self.stop_button = Pin(stop_button, Pin.IN, Pin.PULL_DOWN)
+        self.temp_sensor = ADC(temp_sensor_pin)
+        self.temp_sensor.atten(ADC.ATTN_11DB)
+        self.ultrasonic = UltrasonicSensor()
+        self.max_level = max_level
+        self.min_level = min_level
+        self.max_temp = max_temp
+        self.numTemp_samples = num_samples
+        self.temp_value = None
+        self.fill_timer = None
+        self.drain_timer = None
+        _thread.start_new_thread(self.read_temperature, ())
+        self.filling_button.irq(trigger=Pin.IRQ_FALLING, handler=self.debounceFilling)
+        self.draining_button.irq(trigger=Pin.IRQ_FALLING, handler=self.debounceDraining)
+        self.stop_button.irq(trigger=Pin.IRQ_FALLING, handler=self.debounceStopping)
+        self.timF = Timer(0)
+        self.timD = Timer(1)
+        self.timS = Timer(2)
+
+    def debounceFilling(self, input_pin):
+        self.timF.init(mode=Timer.ONE_SHOT, period=200, callback=self.start_filling)
+
+    def debounceDraining(self, input_pin):
+        self.timD.init(mode=Timer.ONE_SHOT, period=200, callback=self.start_draining)
+
+    def debounceStopping(self, input_pin=None):
+        self.timS.init(mode=Timer.ONE_SHOT, period=200, callback=self.stop_process)
+
+    def start_filling(self, tim):
+        with self.lock:
+            self.executing = True
+            if self.ultrasonic.level >= self.max_level:
+                print("[ALERT] Tank is already full.")
+            else:
+                self.input_valve.value(1)
+                self.fill_timer = Timer(3)
+                self.fill_timer.init(period=100, mode=Timer.PERIODIC, callback=self.check_filling)
+
+    def check_filling(self, t):
+        if self.ultrasonic.level >= self.max_level or not self.executing:
+            self.input_valve.value(0)
+            if self.fill_timer is not None:
+                self.fill_timer.deinit()
+                print("[INFO] Fill timer stopped.")
+                self.fill_timer = None
+            print("Tank filled successfully.")
+        else:
+            print("[INFO] Filling tank...")
+
+    def start_draining(self, tim):
+        with self.lock:
+            self.executing = True
+            if self.ultrasonic.level <= self.min_level:
+                print("[ALERT] Tank is already at the minimum level.")
+            else:
+                self.output_valve.value(1)
+                self.drain_timer = Timer(4)
+                self.drain_timer.init(period=100, mode=Timer.PERIODIC, callback=self.check_draining)
+
+    def check_draining(self, t):
+        if self.ultrasonic.level <= self.min_level or not self.executing:
+            self.output_valve.value(0)
+            if self.drain_timer is not None:
+                self.drain_timer.deinit()
+                print("[INFO] Drain timer stopped.")
+                self.drain_timer = None
+            print("Tank drained successfully.")
+        else:
+            print("[INFO] Draining tank...")
+
+    def stop_process(self, tim=None):
+        with self.lock:
+            self.input_valve.value(0)
+            self.output_valve.value(0)
+            print("Stopping all processes...")
+            if self.fill_timer is not None:
+                self.fill_timer.deinit()
+                print("[INFO] Fill timer stopped.")
+                self.fill_timer = None
+            if self.drain_timer is not None:
+                self.drain_timer.deinit()
+                print("[INFO] Drain timer stopped.")
+                self.drain_timer = None
+            self.executing = False
+        time.sleep_ms(100)
+        print("[INFO] All processes stopped.")
+
+    def read_temperature(self):
+        while True:
+            list_values = []
+            for i in range(0, self.numTemp_samples):
+                value = self.temp_sensor.read()
+                list_values.append(value)
+                time.sleep(1e-3)
+            list_values.sort()
+            self.temp_value = (list_values[self.numTemp_samples // 2] + list_values[self.numTemp_samples // 2 + 1]) / 2
+            self.temp_value = self.scale_temp()
+            if self.temp_value >= self.max_temp:
+                print("[WARNING] High temperature detected.")
+                self.stop_process()
+            time.sleep(1)
+
+    def scale_temp(self):
+        m = (self.v_max - self.v_min) / (self.adc_max - self.adc_min)
+        b = self.v_min - m * self.adc_min
+        value = m * self.temp_value + b
+        print(f"[INFO] Temperature: {value:.2f} degrees")
+        return value
+
+if __name__ == "__main__":
+    System = Tank()
+    try:
+        while True:
+            gc.collect()
+            time.sleep(2)
+    except KeyboardInterrupt:
+        print("Program terminated.")
+</textarea>
                 </div>
 
                 <!-- Imágenes de Sensores -->
                 <div id="sensores" class="doc-section mb-5">
-                    <h2><i class="fas fa-camera"></i> Sensores del Sistema</h2>
-                    <p>Coloca las imágenes de tus sensores en el directorio indicado.</p>
+                    <h2>Sensores del Sistema</h2>
                     
                     <div class="row">
                         <div class="col-md-4">
-                            <div class="image-placeholder">
-                                <i class="fas fa-thermometer-half"></i>
+                            <div class="mb-3">
                                 <h5>Sensor de Temperatura</h5>
-                                <p class="text-muted">DHT22</p>
-                                <div class="path">static/docs/images/sensors/temp_sensor.jpg</div>
+                                <p class="text-muted">LM35DZ</p>
+                                <img src="{% static 'docs/images/sensors/temp_sensor.jpg' %}" alt="Sensor de Temperatura" class="img-fluid" style="max-width: 100%; height: auto; border: 1px solid #dee2e6; border-radius: 4px;">
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <div class="image-placeholder">
-                                <i class="fas fa-ruler"></i>
+                            <div class="mb-3">
                                 <h5>Sensor Ultrasónico</h5>
                                 <p class="text-muted">HC-SR04</p>
-                                <div class="path">static/docs/images/sensors/ultrasonic.jpg</div>
+                                <img src="{% static 'docs/images/sensors/ultrasonic.jpg' %}" alt="Sensor Ultrasónico" class="img-fluid" style="max-width: 100%; height: auto; border: 1px solid #dee2e6; border-radius: 4px;">
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <div class="image-placeholder">
-                                <i class="fas fa-lightbulb"></i>
+                            <div class="mb-3">
                                 <h5>Sensor de Luz</h5>
                                 <p class="text-muted">LDR (Fotoresistor)</p>
-                                <div class="path">static/docs/images/sensors/light_sensor.jpg</div>
+                                <img src="{% static 'docs/images/sensors/light_sensor.jpg' %}" alt="Sensor de Luz" class="img-fluid" style="max-width: 100%; height: auto; border: 1px solid #dee2e6; border-radius: 4px;">
                             </div>
                         </div>
                     </div>
@@ -234,48 +625,28 @@
 
                 <!-- Imágenes del Circuito -->
                 <div id="circuito" class="doc-section mb-5">
-                    <h2><i class="fas fa-bolt"></i> Circuito Completo</h2>
+                    <h2>Circuito Completo</h2>
                     <p>Imágenes del montaje del circuito con ESP32.</p>
                     
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="image-placeholder">
-                                <i class="fas fa-image"></i>
+                            <div class="mb-3">
                                 <h5>Circuito - Vista 1</h5>
-                                <div class="path">static/docs/images/circuit/circuit_01.jpg</div>
+                                <img src="{% static 'docs/images/circuit/circuit_01.jpg' %}" alt="Circuito Vista 1" class="img-fluid" style="max-width: 100%; height: auto; border: 1px solid #dee2e6; border-radius: 4px;">
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="image-placeholder">
-                                <i class="fas fa-image"></i>
+                            <div class="mb-3">
                                 <h5>Circuito - Vista 2</h5>
-                                <div class="path">static/docs/images/circuit/circuit_02.jpg</div>
+                                <img src="{% static 'docs/images/circuit/circuit_02.jpg' %}" alt="Circuito Vista 2" class="img-fluid" style="max-width: 100%; height: auto; border: 1px solid #dee2e6; border-radius: 4px;">
                             </div>
                         </div>
-                    </div>
-                    
-                    <div class="alert-info-custom mt-3">
-                        <strong><i class="fas fa-info-circle"></i> Nota:</strong> 
-                        Reemplaza los placeholders colocando tus imágenes en las rutas indicadas 
-                        (<code>static/docs/images/sensors/</code> y <code>static/docs/images/circuit/</code>).
                     </div>
                 </div>
 
             </div>
         </div>
     </div>
-
-    <!-- Footer -->
-    <footer class="text-center py-4 mt-5">
-        <div class="container">
-            <p class="text-muted mb-0">
-                <small>
-                    © 2024 Universidad de Medellín - Ergonominador | 
-                    <a href="{{ repo_url }}" target="_blank">GitHub</a>
-                </small>
-            </p>
-        </div>
-    </footer>
 
     <!-- Scripts -->
     <script src="{% static 'vendors/js/vendor.bundle.base.js' %}"></script>

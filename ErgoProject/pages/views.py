@@ -86,7 +86,7 @@ def documentation(request):
             'topic': 'sensorsPHOLLEO/temp',
             'type': 'PUBLISH (Hardware → Backend)',
             'payload': 'float (°C)',
-            'description': 'Lecturas del sensor de temperatura DHT22',
+            'description': 'Lecturas del sensor de temperatura LM35DZ',
             'example': '28.5'
         },
         {
