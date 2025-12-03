@@ -52,8 +52,6 @@
                         <a class="nav-link" href="#micropython"><i class="fas fa-microchip"></i> ESP32 / MicroPython</a>
                         <a class="nav-link" href="#sensores"><i class="fas fa-camera"></i> Sensores</a>
                         <a class="nav-link" href="#circuito"><i class="fas fa-bolt"></i> Circuito</a>
-                        <a class="nav-link" href="#ejecucion"><i class="fas fa-play"></i> Ejecución Local</a>
-                        <a class="nav-link" href="#demo"><i class="fas fa-flask"></i> Modo Demo</a>
                     </nav>
                     
                     <hr>
@@ -68,7 +66,7 @@
             <div class="col-lg-9 col-md-8">
                 
                 <!-- README Section -->
-                <div id="readme" class="doc-section">
+                <div id="readme" class="doc-section mb-5">
                     <h2><i class="fas fa-file-alt"></i> README del Proyecto</h2>
                     <div class="readme-content">
                         {{ readme_html|safe }}
@@ -76,7 +74,7 @@
                 </div>
 
                 <!-- Arquitectura -->
-                <div id="arquitectura" class="doc-section">
+                <div id="arquitectura" class="doc-section mb-5">
                     <h2><i class="fas fa-project-diagram"></i> Arquitectura del Sistema</h2>
                     <p>El sistema sigue el patrón <strong>Hardware IoT → MQTT Broker → Backend Django → Frontend Dashboard</strong>.</p>
                     
@@ -101,7 +99,7 @@
                 </div>
 
                 <!-- Endpoints API -->
-                <div id="endpoints" class="doc-section">
+                <div id="endpoints" class="doc-section mb-5">
                     <h2><i class="fas fa-plug"></i> Endpoints de la API REST</h2>
                     <p>El backend Django expone los siguientes endpoints para consulta de datos:</p>
                     
@@ -113,68 +111,54 @@
                                     <span class="badge badge-success">{{ endpoint.method }}</span>
                                     <code>{{ endpoint.url }}</code>
                                 </h5>
-                                <p class="mb-2">{{ endpoint.description }}</p>
+                                <p class="mb-0">{{ endpoint.description }}</p>
                             </div>
                         </div>
-                        
-                        {% if endpoint.response_example %}
-                        <h6 class="mt-3">Ejemplo de respuesta:</h6>
-                        <div class="code-example">
-                            <pre>{{ endpoint.response_example }}</pre>
-                        </div>
-                        {% endif %}
                     </div>
                     {% endfor %}
                 </div>
 
                 <!-- MQTT Topics -->
-                <div id="mqtt" class="doc-section">
+                <div id="mqtt" class="doc-section mb-5">
                     <h2><i class="fas fa-network-wired"></i> Topics MQTT</h2>
                     <p>El sistema utiliza el broker <strong>HiveMQ Cloud</strong> (broker.hivemq.com:8883) con los siguientes topics:</p>
                     
-                    <table class="table table-docs table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Topic</th>
-                                <th>Tipo</th>
-                                <th>Payload</th>
-                                <th>Descripción</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for topic in mqtt_topics %}
-                            <tr>
-                                <td><code>{{ topic.topic }}</code></td>
-                                <td><small class="text-muted">{{ topic.type }}</small></td>
-                                <td><span class="model-badge">{{ topic.payload }}</span></td>
-                                <td>
-                                    {{ topic.description }}
-                                    <br><small class="text-muted">Ej: <code>{{ topic.example }}</code></small>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                    <div class="table-responsive">
+                        <table class="table table-docs table-bordered table-sm">
+                            <thead>
+                                <tr>
+                                    <th style="min-width: 150px;">Topic</th>
+                                    <th style="min-width: 100px;">Tipo</th>
+                                    <th style="min-width: 80px;">Payload</th>
+                                    <th>Descripción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for topic in mqtt_topics %}
+                                <tr>
+                                    <td><code style="font-size: 0.85rem;">{{ topic.topic }}</code></td>
+                                    <td><small class="text-muted">HW→Backend</small></td>
+                                    <td><span class="model-badge">{{ topic.payload }}</span></td>
+                                    <td>
+                                        {{ topic.description }}
+                                        <br><small class="text-muted">Ej: <code>{{ topic.example }}</code></small>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
 
-                    <h3>Configuración del Cliente MQTT</h3>
-                    <div class="code-example">
-<pre>import paho.mqtt.client as paho
-from paho import mqtt
-
-client = paho.Client(client_id="", userdata=None, protocol=paho.MQTTv5)
-client.tls_set(tls_version=mqtt.client.ssl.PROTOCOL_TLS)
-client.connect("broker.hivemq.com", 8883)
-
-# Suscripción a topics
-client.subscribe("sensorsPHOLLEO/#", qos=1)
-client.subscribe("alertPHOLLEO/#", qos=1)
-
-client.loop_forever()  # Thread daemon en wsgi.py</pre>
+                    <div class="image-placeholder mt-4">
+                        <i class="fas fa-code"></i>
+                        <h5>Configuración MQTT desde ESP32</h5>
+                        <p class="text-muted">Insertar aquí la configuración real extraída de <code>MQTT_ERGONOMINADOR.py</code></p>
+                        <div class="path">Código de configuración MQTT del ESP32</div>
                     </div>
                 </div>
 
                 <!-- Modelos Django -->
-                <div id="modelos" class="doc-section">
+                <div id="modelos" class="doc-section mb-5">
                     <h2><i class="fas fa-database"></i> Modelos de Base de Datos</h2>
                     <p>Estructura de datos en <code>mqttApp/models.py</code>:</p>
                     
@@ -185,21 +169,10 @@ client.loop_forever()  # Thread daemon en wsgi.py</pre>
                         <p class="mb-0"><strong>Campos:</strong> <code>{{ model.fields }}</code></p>
                     </div>
                     {% endfor %}
-
-                    <h3>Ejemplo de query:</h3>
-                    <div class="code-example">
-<pre># Obtener últimas 10 lecturas de temperatura
-from mqttApp.models import SensorTemp
-temps = SensorTemp.objects.order_by('-date')[:10]
-
-# Alertas no vistas de distancia
-from mqttApp.models import Alert
-alerts = Alert.objects.filter(type_alert="Distancia", seen=False)</pre>
-                    </div>
                 </div>
 
                 <!-- ESP32 / MicroPython -->
-                <div id="micropython" class="doc-section">
+                <div id="micropython" class="doc-section mb-5">
                     <h2><i class="fas fa-microchip"></i> ESP32 y MicroPython</h2>
                     <p>Archivo: <code>{{ micropython.file }}</code></p>
                     <p>{{ micropython.description }}</p>
@@ -218,27 +191,16 @@ alerts = Alert.objects.filter(type_alert="Distancia", seen=False)</pre>
                         <p class="mb-0">{{ micropython.mqtt_logic }}</p>
                     </div>
 
-                    <h3>Ejemplo de publicación desde ESP32:</h3>
-                    <div class="code-example">
-<pre>from umqtt.simple import MQTTClient
-import machine
-
-# Configurar cliente MQTT
-client = MQTTClient("ESP32_Client", "broker.hivemq.com", 8883, ssl=True)
-client.connect()
-
-# Publicar temperatura
-temp_sensor = machine.ADC(32)
-temp_value = temp_sensor.read()
-client.publish(b"sensorsPHOLLEO/temp", str(temp_value).encode())
-
-# Publicar alerta de postura
-client.publish(b"alertPHOLLEO/postura/Verde", b"120")  # 120 segundos en verde</pre>
+                    <div class="image-placeholder mt-4">
+                        <i class="fas fa-file-code"></i>
+                        <h5>Código Completo MicroPython</h5>
+                        <p class="text-muted">INSERTAR AQUÍ el archivo <code>MQTT_ERGONOMINADOR.py</code></p>
+                        <div class="path">Coloca aquí tu código MQTT_ERGONOMINADOR.py completo o una captura</div>
                     </div>
                 </div>
 
                 <!-- Imágenes de Sensores -->
-                <div id="sensores" class="doc-section">
+                <div id="sensores" class="doc-section mb-5">
                     <h2><i class="fas fa-camera"></i> Sensores del Sistema</h2>
                     <p>Coloca las imágenes de tus sensores en el directorio indicado.</p>
                     
@@ -271,7 +233,7 @@ client.publish(b"alertPHOLLEO/postura/Verde", b"120")  # 120 segundos en verde</
                 </div>
 
                 <!-- Imágenes del Circuito -->
-                <div id="circuito" class="doc-section">
+                <div id="circuito" class="doc-section mb-5">
                     <h2><i class="fas fa-bolt"></i> Circuito Completo</h2>
                     <p>Imágenes del montaje del circuito con ESP32.</p>
                     
@@ -297,57 +259,6 @@ client.publish(b"alertPHOLLEO/postura/Verde", b"120")  # 120 segundos en verde</
                         Reemplaza los placeholders colocando tus imágenes en las rutas indicadas 
                         (<code>static/docs/images/sensors/</code> y <code>static/docs/images/circuit/</code>).
                     </div>
-                </div>
-
-                <!-- Ejecución Local -->
-                <div id="ejecucion" class="doc-section">
-                    <h2><i class="fas fa-play"></i> Ejecución Local</h2>
-                    
-                    <h3>Prerrequisitos</h3>
-                    <div class="code-example">
-<pre>pip install django paho-mqtt</pre>
-                    </div>
-
-                    <h3>Iniciar el servidor</h3>
-                    <div class="code-example">
-<pre>cd ErgoProject
-python manage.py migrate
-python manage.py runserver</pre>
-                    </div>
-
-                    <h3>Acceder al dashboard</h3>
-                    <ul>
-                        <li><strong>Dashboard principal:</strong> <a href="http://127.0.0.1:8000/" target="_blank">http://127.0.0.1:8000/</a></li>
-                        <li><strong>Vista de sensores:</strong> <a href="http://127.0.0.1:8000/sensors_view/" target="_blank">http://127.0.0.1:8000/sensors_view/</a></li>
-                        <li><strong>API Alertas:</strong> <a href="http://127.0.0.1:8000/get-alerts/" target="_blank">http://127.0.0.1:8000/get-alerts/</a></li>
-                        <li><strong>API Datos:</strong> <a href="http://127.0.0.1:8000/get-sensor-data/" target="_blank">http://127.0.0.1:8000/get-sensor-data/</a></li>
-                    </ul>
-                </div>
-
-                <!-- Modo Demo -->
-                <div id="demo" class="doc-section">
-                    <h2><i class="fas fa-flask"></i> Modo Demo (Sin Hardware)</h2>
-                    <p>Para probar el sistema sin hardware IoT, cambia a la rama <code>demo</code>:</p>
-                    
-                    <div class="code-example">
-<pre>git checkout demo
-python manage.py runserver</pre>
-                    </div>
-
-                    <div class="alert-info-custom">
-                        <strong><i class="fas fa-info-circle"></i> Diferencias:</strong>
-                        <ul class="mb-0 mt-2">
-                            <li>Cliente MQTT deshabilitado (wsgi.py limpio)</li>
-                            <li>Datos simulados algorítmicamente en views.py</li>
-                            <li>Base de datos no consultada (datos en memoria)</li>
-                            <li>Frontend idéntico al de producción</li>
-                        </ul>
-                    </div>
-
-                    <p class="mt-3">
-                        Ver <a href="{{ repo_url }}/tree/demo" target="_blank">README de la rama demo</a> 
-                        para más detalles sobre la simulación.
-                    </p>
                 </div>
 
             </div>
