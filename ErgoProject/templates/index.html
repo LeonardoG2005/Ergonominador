@@ -451,28 +451,28 @@
                                       <td class="text-muted">LED Verde</td>
                                       <td class="w-100 px-0">
                                         <div class="progress progress-md mx-4">
-                                          <div class="progress-bar bg-info" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                                          <div id="progress-verde" class="progress-bar bg-info" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
                                       </td>
-                                      <td><h5 class="font-weight-bold mb-0">664</h5></td>
+                                      <td><h5 class="font-weight-bold mb-0" id="led-verde-count">0</h5></td>
                                     </tr>
                                     <tr>
                                       <td class="text-muted">LED Amarillo</td>
                                       <td class="w-100 px-0">
                                         <div class="progress progress-md mx-4">
-                                          <div class="progress-bar bg-primary" role="progressbar" style="width: 40%" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+                                          <div id="progress-amarillo" class="progress-bar bg-primary" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
                                       </td>
-                                      <td><h5 class="font-weight-bold mb-0">560</h5></td>
+                                      <td><h5 class="font-weight-bold mb-0" id="led-amarillo-count">0</h5></td>
                                     </tr>
                                     <tr>
                                       <td class="text-muted">LED Rojo</td>
                                       <td class="w-100 px-0">
                                         <div class="progress progress-md mx-4">
-                                          <div class="progress-bar bg-danger" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                                          <div id="progress-rojo" class="progress-bar bg-danger" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
                                       </td>
-                                      <td><h5 class="font-weight-bold mb-0">793</h5></td>
+                                      <td><h5 class="font-weight-bold mb-0" id="led-rojo-count">0</h5></td>
                                     </tr>
                                   </table>
                                 </div>
@@ -661,6 +661,23 @@ function updateCharts() {
               data.semaforo_tiempos['Amarillo'],
               data.semaforo_tiempos['Rojo']
           ];
+
+          // Actualiza los contadores de LED en la tabla
+          $("#led-verde-count").text(data.semaforo_tiempos['Verde']);
+          $("#led-amarillo-count").text(data.semaforo_tiempos['Amarillo']);
+          $("#led-rojo-count").text(data.semaforo_tiempos['Rojo']);
+
+          // Actualiza las barras de progreso (calculando porcentaje del total)
+          var total = data.semaforo_tiempos['Verde'] + data.semaforo_tiempos['Amarillo'] + data.semaforo_tiempos['Rojo'];
+          if (total > 0) {
+              var verdePercent = Math.round((data.semaforo_tiempos['Verde'] / total) * 100);
+              var amarilloPercent = Math.round((data.semaforo_tiempos['Amarillo'] / total) * 100);
+              var rojoPercent = Math.round((data.semaforo_tiempos['Rojo'] / total) * 100);
+              
+              $("#progress-verde").css('width', verdePercent + '%').attr('aria-valuenow', verdePercent);
+              $("#progress-amarillo").css('width', amarilloPercent + '%').attr('aria-valuenow', amarilloPercent);
+              $("#progress-rojo").css('width', rojoPercent + '%').attr('aria-valuenow', rojoPercent);
+          }
 
           // Refresca todos los gráficos
           tempChart.update();

@@ -21,7 +21,7 @@ const MockDataGenerator = {
 
     generateSensorValue: function(min, max, previousValue) {
         if (previousValue !== undefined) {
-            const delta = (Math.random() - 0.5) * 5;
+            const delta = (Math.random() - 0.5) * 2;
             const newValue = previousValue + delta;
             return Math.max(min, Math.min(max, newValue));
         }
@@ -46,9 +46,9 @@ const MockDataGenerator = {
         const lastSonido = data.sonido_values[data.sonido_values.length - 1];
         const lastLuz = data.luz_values[data.luz_values.length - 1];
 
-        const newTemp = this.generateSensorValue(20, 32, lastTemp);
-        const newSonido = this.generateSensorValue(15, 80, lastSonido);
-        const newLuz = this.generateSensorValue(100, 900, lastLuz);
+        const newTemp = this.generateSensorValue(22, 28, lastTemp);
+        const newSonido = this.generateSensorValue(35, 65, lastSonido);
+        const newLuz = this.generateSensorValue(300, 700, lastLuz);
 
         data.temp_timestamps.push(now);
         data.temp_values.push(parseFloat(newTemp.toFixed(2)));
@@ -80,7 +80,7 @@ const MockDataGenerator = {
     startSimulation: function() {
         setInterval(() => {
             this.addDataPoint();
-        }, 5000);
+        }, 10000);
     }
 };
 
