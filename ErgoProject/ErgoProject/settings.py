@@ -140,13 +140,14 @@ STATIC_URL = '/static/'
 # Directorio donde Django buscará archivos estáticos adicionales
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
-# En Vercel, servir directamente desde STATICFILES_DIRS sin collectstatic
-if os.environ.get('VERCEL'):
+# Directorio donde collectstatic recopilará los archivos
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# WhiteNoise configuration - servir archivos estáticos sin collectstatic en desarrollo
+if not os.environ.get('VERCEL'):
     WHITENOISE_USE_FINDERS = True
     WHITENOISE_AUTOREFRESH = True
-else:
-    # En local, usar configuración normal
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
