@@ -1,9 +1,13 @@
 {
+  "version": 2,
   "builds": [
     {
       "src": "ErgoProject/wsgi.py",
       "use": "@vercel/python",
-      "config": { "runtime": "python3.12" }
+      "config": { 
+        "runtime": "python3.12",
+        "maxLambdaSize": "15mb"
+      }
     }
   ],
   "routes": [
