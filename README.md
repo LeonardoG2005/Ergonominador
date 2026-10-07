@@ -1,6 +1,16 @@
-# Ergonominador - Sistema de Monitoreo Ergonómico IoT
+<div align="center">
+
+# Ergonominador
+
+### Sistema de Monitoreo Ergonómico IoT
 
 Sistema Django que integra sensores IoT vía MQTT para monitorear condiciones ergonómicas del espacio de trabajo.
+
+<img src="ErgoProject/static/docs/images/proyecto_completo.jpg" alt="Ergonominador completo: dashboard web junto al prototipo físico con sensores y semáforo" width="640">
+
+<sub><i>El Ergonominador en acción: dashboard web (izquierda) y prototipo físico con sensores y semáforo de postura (derecha).</i></sub>
+
+</div>
 
 ## Autores
 
@@ -19,6 +29,32 @@ Sistema Django que integra sensores IoT vía MQTT para monitorear condiciones er
 - **Hardware**: ESP32 + MicroPython
 - **Sensores**: LM35DZ (temperatura), HC-SR04 (ultrasonido), LDR (luz)
 - **Protocolo**: MQTT over TLS (puerto 8883)
+
+### Sensores
+
+<div align="center">
+
+<table>
+  <tr>
+    <td align="center" valign="bottom">
+      <img src="ErgoProject/static/docs/images/sensors/light_sensor.jpg" alt="Sensor de temperatura LM35DZ" height="150"><br>
+      <b>LM35DZ</b><br>
+      <sub>Temperatura ambiente</sub>
+    </td>
+    <td align="center" valign="bottom">
+      <img src="ErgoProject/static/docs/images/sensors/ultrasonic.jpg" alt="Sensor ultrasónico HC-SR04" height="150"><br>
+      <b>HC-SR04</b><br>
+      <sub>Distancia a la pantalla</sub>
+    </td>
+    <td align="center" valign="bottom">
+      <img src="ErgoProject/static/docs/images/sensors/temp_sensor.jpg" alt="Fotoresistor LDR" height="150"><br>
+      <b>LDR</b><br>
+      <sub>Luz ambiente</sub>
+    </td>
+  </tr>
+</table>
+
+</div>
 
 ## Componentes Clave
 
@@ -75,6 +111,27 @@ Sistema Django que integra sensores IoT vía MQTT para monitorear condiciones er
 **Transiciones**: El hardware envía `postura/AmarilloVerde` cuando cambia de amarillo→verde (agregado a tiempo amarillo en backend).
 
 El dashboard muestra proporción de tiempo en cada estado vía gráfico dona, permitiendo análisis de hábitos posturales.
+
+### Circuito
+
+Así luce el montaje en protoboard: ESP32 al centro, los sensores a la izquierda y los LEDs del semáforo junto al botón a la derecha.
+
+<div align="center">
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="ErgoProject/static/docs/images/circuit/circuit_01.jpg" alt="Circuito en protoboard, vista 1" width="320"><br>
+      <sub><i>Vista 1</i></sub>
+    </td>
+    <td align="center">
+      <img src="ErgoProject/static/docs/images/circuit/circuit_02.jpg" alt="Circuito en protoboard, vista 2" width="320"><br>
+      <sub><i>Vista 2</i></sub>
+    </td>
+  </tr>
+</table>
+
+</div>
 
 ## Ejecución Local
 
