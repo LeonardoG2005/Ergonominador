@@ -4,17 +4,9 @@
     {
       "src": "index.py",
       "use": "@vercel/python"
-    },
-    {
-      "src": "vercel_build.py",
-      "use": "@vercel/python"
     }
   ],
   "routes": [
-    {
-      "src": "/static/(.*)",
-      "dest": "/staticfiles/$1"
-    },
     {
       "src": "/(.*)",
       "dest": "index.py"

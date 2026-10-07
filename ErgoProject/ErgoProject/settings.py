@@ -143,14 +143,14 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 # Directorio donde collectstatic recopilará los archivos
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# WhiteNoise configuration - servir archivos estáticos sin collectstatic en desarrollo
-if not os.environ.get('VERCEL'):
-    WHITENOISE_USE_FINDERS = True
-    WHITENOISE_AUTOREFRESH = True
+# WhiteNoise: sirve los estáticos directamente desde STATICFILES_DIRS (sin collectstatic).
+# Vercel ya no ejecuta scripts de build propios, así que esto aplica también en producción.
+WHITENOISE_USE_FINDERS = True
+# Solo en local: recarga los archivos al cambiarlos
+WHITENOISE_AUTOREFRESH = not os.environ.get('VERCEL')
 
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
